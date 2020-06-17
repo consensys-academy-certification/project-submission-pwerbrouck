@@ -84,8 +84,15 @@ contract ProjectSubmission { // Step 1
     }
     
     function withdraw( bytes32 docHash ) public returns( uint256 amount ) {  // Step 5 (Overloading Function)
+      
+      //  test that the request comes from the student that submited the project 
+      // This test breaks ths last case of the App test (not sure why!)  
+      // require( projects[ docHash ].author == msg.sender , 'Withdrwal rejected: not the author!' );
+
       // test that the project exists and has a non-negative balance
       require( projects[ docHash ].balance > 0, 'Withdrwal rejected: nothing to withdraw!' );
+      
+      // only process the withdrwal if the request is issued by the project 'author'
       if (msg.sender == projects[ docHash ].author) {
         // appropriate student withdrwal
         amount = projects[ docHash ].balance;
